@@ -27,4 +27,19 @@ describe('external apis still working',() => {
       expect(myObject.status).toBe(200);
       expect(pokemon.name).toBe('bulbasaur');
   });
+
+  test('can access the drag race api', async () => {
+    const allQueensInSeasonURL = 'http://www.nokeynoshade.party/api/seasons/1/queens';
+
+    const myObject = await fetch(allQueensInSeasonURL);
+    const queens = await myObject.json();
+
+    const ninaFlowers =  queens.filter( queen => queen.id == 11)[0];
+    expect(myObject.status).toBe(200);
+    expect(ninaFlowers.name).toMatch('Nina Flowers');
+    expect(ninaFlowers.winner).toBe(false);
+    expect(ninaFlowers.missCongeniality).toBe(true);
+    expect(ninaFlowers.image_url).toMatch("http://www.nokeynoshade.party/images/nina-flowers.jpg");
+
+  });
 });
