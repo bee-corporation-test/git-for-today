@@ -17,7 +17,7 @@ describe('Test to test the tests', () => {
   });
 });
 
-describe('external apis still working',() => {
+describe('external apis that are still working',() => {
   test('can access the pokemon api', async () => {
     const pokemonURL = 'https://pokeapi.co/api/v2/pokemon/1/';
    
