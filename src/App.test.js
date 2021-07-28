@@ -44,6 +44,7 @@ describe('external apis still working',() => {
     expect(art.artObjects.length).toBe(10);
     expect(seatedCupid.title).toMatch('Seated Cupid');
     expect(seatedCupid.principalOrFirstMaker).toMatch('Étienne-Maurice Falconet');
+  });
 
   test('can access the drag race api', async () => {
     const allQueensInSeasonURL = 'http://www.nokeynoshade.party/api/seasons/1/queens';
