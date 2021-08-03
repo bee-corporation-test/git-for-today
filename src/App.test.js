@@ -51,12 +51,23 @@ describe('external apis still working',() => {
 
     const myObject = await fetch(makeupURL);
     const makeupProducts = await myObject.json();
-    // const 
+
     const expressEyeliner = makeupProducts.find(product => product.id == 232);
 
     expect(myObject.status).toBe(200);
     expect(makeupProducts.length).toBe(54);
     expect(expressEyeliner.name).toMatch('Maybelline Line Express Eyeliner');
     expect(expressEyeliner.product_type).toMatch('eyeliner');
+  });
+
+  test('can access the openbrewery api', async () => {
+    const breweriesURL = 'https://api.openbrewerydb.org/breweries';
+
+    const myObject = await fetch(breweriesURL);
+    const breweries = await myObject.json();
+    const snowBeltBrewery = breweries.find(brewery => brewery.id == 14417);
+
+    expect(myObject.status).toBe(200);
+    expect(snowBeltBrewery.name).toMatch('Snow Belt Brew')
   });
 });
