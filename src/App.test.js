@@ -34,12 +34,29 @@ describe('external apis still working',() => {
     const myObject = await fetch(allQueensInSeasonURL);
     const queens = await myObject.json();
 
-    const ninaFlowers =  queens.filter( queen => queen.id == 11)[0];
+    const ninaFlowers =  queens.find( queen => queen.id == 11);
+
     expect(myObject.status).toBe(200);
     expect(ninaFlowers.name).toMatch('Nina Flowers');
     expect(ninaFlowers.winner).toBe(false);
     expect(ninaFlowers.missCongeniality).toBe(true);
     expect(ninaFlowers.image_url).toMatch("http://www.nokeynoshade.party/images/nina-flowers.jpg");
 
+  });
+
+  test('can access the makeup api', async () => {
+    // a note that this api is slow if you do not specify any search params
+    const makeupURL = 'http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline';
+
+
+    const myObject = await fetch(makeupURL);
+    const makeupProducts = await myObject.json();
+    // const 
+    const expressEyeliner = makeupProducts.find(product => product.id == 232);
+
+    expect(myObject.status).toBe(200);
+    expect(makeupProducts.length).toBe(54);
+    expect(expressEyeliner.name).toMatch('Maybelline Line Express Eyeliner');
+    expect(expressEyeliner.product_type).toMatch('eyeliner');
   });
 });
