@@ -30,7 +30,8 @@ describe('external apis still working',() => {
 
 
   test('can access the rijksmuseum api', async () => {
-    const rijksURL = new URL('https://www.rijksmuseum.nl/api/en/collection');
+    const rijksURL = new URL('https://www.rijksmuseum.nl/api/en/collection/SK-A-3580');
+
 
     rijksURL.search = new URLSearchParams({
       key: process.env.REACT_APP_RIJKS_KEY
@@ -38,12 +39,10 @@ describe('external apis still working',() => {
 
     const myObject = await fetch(rijksURL);
     const art = await myObject.json();
-    const seatedCupid = art.artObjects.find(pieceOfArt => pieceOfArt.id == 'en-BK-1963-101')
 
-    expect(myObject.status).toBe(200);
-    expect(art.artObjects.length).toBe(10);
-    expect(seatedCupid.title).toMatch('Seated Cupid');
-    expect(seatedCupid.principalOrFirstMaker).toMatch('Étienne-Maurice Falconet');
+     expect(myObject.status).toBe(200);
+     expect(art.artObject.title).toMatch('The Singel Bridge at the Paleisstraat in Amsterdam');
+     expect(art.artObject.principalOrFirstMaker).toMatch('George Hendrik Breitner');
   });
 
   test('can access the drag race api', async () => {
