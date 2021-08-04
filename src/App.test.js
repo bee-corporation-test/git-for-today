@@ -28,6 +28,24 @@ describe('external apis still working',() => {
       expect(pokemon.name).toBe('bulbasaur');
   });
 
+
+  test('can access the rijksmuseum api', async () => {
+    const rijksURL = new URL('https://www.rijksmuseum.nl/api/en/collection');
+
+    rijksURL.search = new URLSearchParams({
+      key: process.env.REACT_APP_RIJKS_KEY
+    });
+
+    const myObject = await fetch(rijksURL);
+    const art = await myObject.json();
+    const seatedCupid = art.artObjects.find(pieceOfArt => pieceOfArt.id == 'en-BK-1963-101')
+
+    expect(myObject.status).toBe(200);
+    expect(art.artObjects.length).toBe(10);
+    expect(seatedCupid.title).toMatch('Seated Cupid');
+    expect(seatedCupid.principalOrFirstMaker).toMatch('Étienne-Maurice Falconet');
+  });
+
   test('can access the drag race api', async () => {
     const allQueensInSeasonURL = 'http://www.nokeynoshade.party/api/seasons/1/queens';
 
