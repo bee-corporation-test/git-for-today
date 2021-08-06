@@ -87,4 +87,27 @@ describe('external apis still working',() => {
     expect(myObject.status).toBe(200);
     expect(snowBeltBrewery.name).toMatch('Snow Belt Brew')
   });
+
+  test('can access the mapquest geocoding api', async () => {
+    const geocodingURL = new URL('http://www.mapquestapi.com/geocoding/v1/address');
+
+    geocodingURL.search = new URLSearchParams({
+      key: process.env.REACT_APP_MAPQUEST_KEY,
+      location: 'Toronto, Ontario'
+    });
+
+    const myObject = await fetch(geocodingURL);
+    const location = await myObject.json();
+    
+    const country = location.results[0].locations[0].adminArea1;
+    const lattitude = location.results[0].locations[0].latLng.lat;
+    const longitude = location.results[0].locations[0].latLng.lng;
+
+    expect(myObject.status).toBe(200);
+    expect(country).toMatch('CA');
+    expect(lattitude).toBe(43.651893);
+    expect(longitude).toBe(-79.381713);
+
+  });
+
 });
