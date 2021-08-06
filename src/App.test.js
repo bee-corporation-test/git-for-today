@@ -30,7 +30,8 @@ describe('external apis still working',() => {
 
 
   test('can access the rijksmuseum api', async () => {
-    const rijksURL = new URL('https://www.rijksmuseum.nl/api/en/collection');
+    const rijksURL = new URL('https://www.rijksmuseum.nl/api/en/collection/SK-A-3580');
+
 
     rijksURL.search = new URLSearchParams({
       key: process.env.REACT_APP_RIJKS_KEY
@@ -38,12 +39,10 @@ describe('external apis still working',() => {
 
     const myObject = await fetch(rijksURL);
     const art = await myObject.json();
-    const seatedCupid = art.artObjects.find(pieceOfArt => pieceOfArt.id == 'en-BK-1963-101')
 
-    expect(myObject.status).toBe(200);
-    expect(art.artObjects.length).toBe(10);
-    expect(seatedCupid.title).toMatch('Seated Cupid');
-    expect(seatedCupid.principalOrFirstMaker).toMatch('Étienne-Maurice Falconet');
+     expect(myObject.status).toBe(200);
+     expect(art.artObject.title).toMatch('The Singel Bridge at the Paleisstraat in Amsterdam');
+     expect(art.artObject.principalOrFirstMaker).toMatch('George Hendrik Breitner');
   });
 
   test('can access the drag race api', async () => {
@@ -88,4 +87,27 @@ describe('external apis still working',() => {
     expect(myObject.status).toBe(200);
     expect(snowBeltBrewery.name).toMatch('Snow Belt Brew')
   });
+
+  test('can access the mapquest geocoding api', async () => {
+    const geocodingURL = new URL('http://www.mapquestapi.com/geocoding/v1/address');
+
+    geocodingURL.search = new URLSearchParams({
+      key: process.env.REACT_APP_MAPQUEST_KEY,
+      location: 'Toronto, Ontario'
+    });
+
+    const myObject = await fetch(geocodingURL);
+    const location = await myObject.json();
+    
+    const country = location.results[0].locations[0].adminArea1;
+    const lattitude = location.results[0].locations[0].latLng.lat;
+    const longitude = location.results[0].locations[0].latLng.lng;
+
+    expect(myObject.status).toBe(200);
+    expect(country).toMatch('CA');
+    expect(lattitude).toBe(43.651893);
+    expect(longitude).toBe(-79.381713);
+
+  });
+
 });
